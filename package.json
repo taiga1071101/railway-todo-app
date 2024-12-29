@@ -21,12 +21,14 @@
     "@eslint/js": "^9.17.0",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-define-config": "^2.1.0",
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-react": "^7.37.3",
     "globals": "^15.14.0",
     "prettier": "3.4.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "sass": "^1.83.0"
   },
   "scripts": {
     "start": "react-scripts start",

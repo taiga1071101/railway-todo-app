@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { url } from '../const';
 import { useNavigate, useParams } from 'react-router';
-import './editTask.css';
+import './editTask.scss';
 
 export const EditTask = () => {
   const navigate = useNavigate();
@@ -13,16 +13,19 @@ export const EditTask = () => {
   const [title, setTitle] = useState('');
   const [detail, setDetail] = useState('');
   const [isDone, setIsDone] = useState();
+  const [limit, setLimit] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === 'done');
+  const handleLimitChange = (e) => setLimit(e.target.value);
   const onUpdateTask = () => {
     console.log(isDone);
     const data = {
       title: title,
       detail: detail,
       done: isDone,
+      limit: new Date(limit).toISOString()
     };
 
     axios
@@ -55,6 +58,23 @@ export const EditTask = () => {
       });
   };
 
+  const convertToLocalDate = (limit) => {
+    const localDate = new Date(limit);
+    console.log("localDate：" + localDate);
+  
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const hours = String(localDate.getHours()).padStart(2, '0');
+    const minutes = String(localDate.getMinutes()).padStart(2, '0');
+    const seconds = String(localDate.getSeconds()).padStart(2, '0');  // 秒も取得（ISO形式に合わせるため）
+  
+    // ローカル時刻をYYYY-MM-DDTHH:MM:SS形式に整形
+    const localDateString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    console.log("localDateString：" + localDateString);
+    return localDateString;
+  }
+
   useEffect(() => {
     axios
       .get(`${url}/lists/${listId}/tasks/${taskId}`, {
@@ -67,6 +87,7 @@ export const EditTask = () => {
         setTitle(task.title);
         setDetail(task.detail);
         setIsDone(task.done);
+        setLimit(convertToLocalDate(task.limit));
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
@@ -96,6 +117,14 @@ export const EditTask = () => {
             onChange={handleDetailChange}
             className="edit-task-detail"
             value={detail}
+          />
+          <br />
+          <label>期日</label>
+          <br />
+          <input
+            type='datetime-local'
+            onChange={handleLimitChange}
+            value={limit}
           />
           <br />
           <div>

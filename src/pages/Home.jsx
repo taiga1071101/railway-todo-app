@@ -5,7 +5,7 @@ import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import { Header } from '../components/Header';
 import { url } from '../const';
-import './home.css';
+import './home.scss';
 
 export const Home = () => {
   const [isDoneDisplay, setIsDoneDisplay] = useState('todo'); // todo->未完了 done->完了
@@ -128,6 +128,34 @@ const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
   if (tasks === null) return <></>;
 
+  const convertToLocalDate = (limit) => {
+    const localDate = new Date(limit);
+  
+    const year = localDate.getFullYear();
+    const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
+    const day = String(localDate.getDate()).padStart(2, '0');
+    const hours = String(localDate.getHours()).padStart(2, '0');
+    const minutes = String(localDate.getMinutes()).padStart(2, '0');
+    const seconds = String(localDate.getSeconds()).padStart(2, '0');  // 秒も取得（ISO形式に合わせるため）
+  
+    // ローカル時刻をYYYY-MM-DDTHH:MM:SS形式に整形
+    const localDateString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+    return localDateString;
+  }
+
+  const remainingDate = (limit) => {
+    const localDate = new Date(limit);
+    const today = new Date();
+    const diffDays = localDate - today;
+    const diffMinutes = Math.floor(diffDays / (1000 * 60));
+    console.log(diffMinutes);
+    console.log(diffMinutes / (24 * 60));
+    const day = Math.floor(diffMinutes / (24 * 60));
+    const hours = Math.floor(diffMinutes % 24);
+    const minutes = diffMinutes % (24 * 60);
+    return `${day}日${hours}時間${minutes}分`;
+  }
+
   if (isDoneDisplay == 'done') {
     return (
       <ul>
@@ -143,6 +171,7 @@ const Tasks = (props) => {
               >
                 {task.title}
                 <br />
+                <span>期日：</span>{convertToLocalDate(task.limit)}
                 {task.done ? '完了' : '未完了'}
               </Link>
             </li>
@@ -164,6 +193,10 @@ const Tasks = (props) => {
               className="task-item-link"
             >
               {task.title}
+              <br />
+              <span>期日：</span>{convertToLocalDate(task.limit)}
+              <br />
+              <span>残り日時：</span>{remainingDate(task.limit)}
               <br />
               {task.done ? '完了' : '未完了'}
             </Link>
