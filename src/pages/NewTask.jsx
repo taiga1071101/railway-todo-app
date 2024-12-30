@@ -20,12 +20,10 @@ export const NewTask = () => {
   const handleLimitChange = (e) => setLimit(e.target.value);
   const handleSelectList = (id) => setSelectListId(id);
   const onCreateTask = () => {
-    const date = new Date(limit);
     const data = {
       title: title,
       detail: detail,
       done: false,
-      // limit: `${limit}Z`
       limit: new Date(limit).toISOString() // UTC（YYYY-MM-DDTHH:MM:SSZ形式）に変換（見た目上はYYYY-MM-DDTHH:MM:SS.ZZZZだが、同じ？）
     };
 
@@ -57,7 +55,7 @@ export const NewTask = () => {
       .catch((err) => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [cookies.token]);
 
   return (
     <div>
@@ -99,10 +97,9 @@ export const NewTask = () => {
           <br />
           <input
             type='datetime-local'
-            step='1'
             onChange={handleLimitChange}
+            className="new-task-limit"
           />
-          <button onClick={() => {alert(limit)}}>test</button>
           <br />
           <button
             type="button"

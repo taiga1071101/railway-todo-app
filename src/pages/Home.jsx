@@ -28,7 +28,7 @@ export const Home = () => {
       .catch((err) => {
         setErrorMessage(`リストの取得に失敗しました。${err}`);
       });
-  }, []);
+  }, [cookies.token]);
 
   useEffect(() => {
     const listId = lists[0]?.id;
@@ -47,7 +47,7 @@ export const Home = () => {
           setErrorMessage(`タスクの取得に失敗しました。${err}`);
         });
     }
-  }, [lists]);
+  }, [lists, cookies.token]);
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -136,27 +136,27 @@ const Tasks = (props) => {
     const day = String(localDate.getDate()).padStart(2, '0');
     const hours = String(localDate.getHours()).padStart(2, '0');
     const minutes = String(localDate.getMinutes()).padStart(2, '0');
-    const seconds = String(localDate.getSeconds()).padStart(2, '0');  // 秒も取得（ISO形式に合わせるため）
   
-    // ローカル時刻をYYYY-MM-DDTHH:MM:SS形式に整形
-    const localDateString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-    return localDateString;
+    return  `${year}年${month}月${day}日${hours}時${minutes}分`;
   }
 
   const remainingDate = (limit) => {
     const localDate = new Date(limit);
     const today = new Date();
     const diffDays = localDate - today;
-    const diffMinutes = Math.floor(diffDays / (1000 * 60));
-    console.log(diffMinutes);
-    console.log(diffMinutes / (24 * 60));
-    const day = Math.floor(diffMinutes / (24 * 60));
-    const hours = Math.floor(diffMinutes % 24);
-    const minutes = diffMinutes % (24 * 60);
-    return `${day}日${hours}時間${minutes}分`;
+    if (diffDays > 0) {
+      const diffMinutes = Math.floor(diffDays / (1000 * 60));
+      const diffHours = Math.floor(Math.floor(diffMinutes / 60));
+      const day = Math.floor(diffHours / 24);
+      const hours = Math.floor(diffHours % 24);
+      const minutes = diffMinutes % 60;
+      return `${day}日${hours}時間${minutes}分`;
+    } else {
+      return '期日超過';
+    }
   }
 
-  if (isDoneDisplay == 'done') {
+  if (isDoneDisplay === 'done') {
     return (
       <ul>
         {tasks
@@ -172,6 +172,7 @@ const Tasks = (props) => {
                 {task.title}
                 <br />
                 <span>期日：</span>{convertToLocalDate(task.limit)}
+                <br />
                 {task.done ? '完了' : '未完了'}
               </Link>
             </li>

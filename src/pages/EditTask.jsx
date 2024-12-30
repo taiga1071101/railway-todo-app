@@ -60,18 +60,15 @@ export const EditTask = () => {
 
   const convertToLocalDate = (limit) => {
     const localDate = new Date(limit);
-    console.log("localDate：" + localDate);
   
     const year = localDate.getFullYear();
     const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
     const day = String(localDate.getDate()).padStart(2, '0');
     const hours = String(localDate.getHours()).padStart(2, '0');
     const minutes = String(localDate.getMinutes()).padStart(2, '0');
-    const seconds = String(localDate.getSeconds()).padStart(2, '0');  // 秒も取得（ISO形式に合わせるため）
   
-    // ローカル時刻をYYYY-MM-DDTHH:MM:SS形式に整形
-    const localDateString = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
-    console.log("localDateString：" + localDateString);
+    // ローカル時刻をYYYY-MM-DDTHH:MM形式に整形
+    const localDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
     return localDateString;
   }
 
@@ -124,6 +121,7 @@ export const EditTask = () => {
           <input
             type='datetime-local'
             onChange={handleLimitChange}
+            className='edit-task-limit'
             value={limit}
           />
           <br />
