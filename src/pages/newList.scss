@@ -1,8 +1,9 @@
 @charset "utf-8";
 
 .new-list {
-  width: 1000px;
   margin: 0 auto;
+  width: 80%;
+  max-width: 1000px;
 }
 
 .new-list-form {
@@ -10,7 +11,8 @@
 }
 
 .new-list-title {
-  width: 300px;
+  width: 100%;
+  max-width: 300px;
   margin-bottom: 25px;
 }
 

@@ -64,6 +64,17 @@ export const Home = () => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
   };
+
+  const handleKeyDown = (e, currentIndex) => {
+    if (e.key === 'ArrowRight') {
+      const nextIndex = (currentIndex + 1) % lists.length;
+      handleSelectList(lists[nextIndex].id);
+    } else if (e.key === 'ArrowLeft') {
+      const prevIndex = (currentIndex - 1 + lists.length) % lists.length;
+      handleSelectList(lists[prevIndex].id);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -83,14 +94,22 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <ul className="list-tab">
+          <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
                 <li
-                  key={key}
+                  key={list.id}
+                  id={`tab-${list.id}`}
+                  role="tab"
+                  tabIndex={isActive ? 0 : -1} // 現在選択中のタブにのみフォーカスを設定
+                  aria-selected={isActive} // 選択中のタブ
                   className={`list-tab-item ${isActive ? 'active' : ''}`}
                   onClick={() => handleSelectList(list.id)}
+                  onKeyDown={(e) => handleKeyDown(e, key)}
+                  ref={(el) => {
+                    if (isActive && el) el.focus();
+                  }}
                 >
                   {list.title}
                 </li>
@@ -130,15 +149,15 @@ const Tasks = (props) => {
 
   const convertToLocalDate = (limit) => {
     const localDate = new Date(limit);
-  
+
     const year = localDate.getFullYear();
     const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
     const day = String(localDate.getDate()).padStart(2, '0');
     const hours = String(localDate.getHours()).padStart(2, '0');
     const minutes = String(localDate.getMinutes()).padStart(2, '0');
-  
-    return  `${year}年${month}月${day}日${hours}時${minutes}分`;
-  }
+
+    return `${year}年${month}月${day}日${hours}時${minutes}分`;
+  };
 
   const remainingDate = (limit) => {
     const localDate = new Date(limit);
@@ -154,7 +173,7 @@ const Tasks = (props) => {
     } else {
       return '期日超過';
     }
-  }
+  };
 
   if (isDoneDisplay === 'done') {
     return (
@@ -171,7 +190,8 @@ const Tasks = (props) => {
               >
                 {task.title}
                 <br />
-                <span>期日：</span>{convertToLocalDate(task.limit)}
+                <span>期日：</span>
+                {convertToLocalDate(task.limit)}
                 <br />
                 {task.done ? '完了' : '未完了'}
               </Link>
@@ -195,9 +215,11 @@ const Tasks = (props) => {
             >
               {task.title}
               <br />
-              <span>期日：</span>{convertToLocalDate(task.limit)}
+              <span>期日：</span>
+              {convertToLocalDate(task.limit)}
               <br />
-              <span>残り日時：</span>{remainingDate(task.limit)}
+              <span>残り日時：</span>
+              {remainingDate(task.limit)}
               <br />
               {task.done ? '完了' : '未完了'}
             </Link>

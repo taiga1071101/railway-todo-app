@@ -32,4 +32,12 @@ export default [
       'react/react-in-jsx-scope': 'off', // React 17以降ではスコープにReactをインポートしなくてもOK
     },
   },
+  // Prettierの設定を適用してESLintルールを無効化
+  {
+    plugins: ['prettier'],
+    extends: ['prettier'],
+    rules: {
+      'prettier/prettier': 'warn', // Prettierのフォーマットに従わない場合、警告を表示
+    },
+  },
 ];

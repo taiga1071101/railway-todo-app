@@ -1,7 +1,8 @@
 @charset "utf-8";
 
 .new-task {
-  width: 1000px;
+  width: 80%;
+  max-width: 1000px;
   margin: 0 auto;
 
   .new-task-form {
@@ -10,18 +11,19 @@
     .new-task-select-list,
     .new-task-title,
     .new-task-detail {
-      width: 300px;
+      width: 100%;
+      max-width: 300px;
       margin-bottom: 25px;
     }
-    
+
     .new-task-limit {
       margin-bottom: 25px;
     }
-    
+
     .new-task-detail {
       height: 200px;
     }
-    
+
     .new-task-button {
       background-color: #242f9b;
       color: #ffffff;
@@ -30,7 +32,7 @@
       border-radius: 5px;
     }
   }
-  
+
   .error-message {
     color: #ff3333;
   }

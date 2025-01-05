@@ -25,7 +25,7 @@ export const EditTask = () => {
       title: title,
       detail: detail,
       done: isDone,
-      limit: new Date(limit).toISOString()
+      limit: new Date(limit).toISOString(),
     };
 
     axios
@@ -60,17 +60,17 @@ export const EditTask = () => {
 
   const convertToLocalDate = (limit) => {
     const localDate = new Date(limit);
-  
+
     const year = localDate.getFullYear();
     const month = String(localDate.getMonth() + 1).padStart(2, '0'); // 月は0から始まるので+1
     const day = String(localDate.getDate()).padStart(2, '0');
     const hours = String(localDate.getHours()).padStart(2, '0');
     const minutes = String(localDate.getMinutes()).padStart(2, '0');
-  
+
     // ローカル時刻をYYYY-MM-DDTHH:MM形式に整形
     const localDateString = `${year}-${month}-${day}T${hours}:${minutes}`;
     return localDateString;
-  }
+  };
 
   useEffect(() => {
     axios
@@ -119,9 +119,9 @@ export const EditTask = () => {
           <label>期日</label>
           <br />
           <input
-            type='datetime-local'
+            type="datetime-local"
             onChange={handleLimitChange}
-            className='edit-task-limit'
+            className="edit-task-limit"
             value={limit}
           />
           <br />

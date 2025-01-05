@@ -24,7 +24,7 @@ export const NewTask = () => {
       title: title,
       detail: detail,
       done: false,
-      limit: new Date(limit).toISOString() // UTC（YYYY-MM-DDTHH:MM:SSZ形式）に変換（見た目上はYYYY-MM-DDTHH:MM:SS.ZZZZだが、同じ？）
+      limit: new Date(limit).toISOString(), // UTC（YYYY-MM-DDTHH:MM:SSZ形式）に変換（見た目上はYYYY-MM-DDTHH:MM:SS.ZZZZだが、同じ？）
     };
 
     axios
@@ -96,7 +96,7 @@ export const NewTask = () => {
           <label>期日</label>
           <br />
           <input
-            type='datetime-local'
+            type="datetime-local"
             onChange={handleLimitChange}
             className="new-task-limit"
           />
