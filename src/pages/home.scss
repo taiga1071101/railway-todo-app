@@ -1,18 +1,18 @@
-@use "./mixins";
+@use './mixins';
 
 .taskList {
   margin: 50px auto;
   list-style: none;
   width: 80%;
-  @include mixins.respond-to("bigger-sp") {
+  @include mixins.respond-to('bigger-sp') {
     max-width: 700px;
   }
-  @include mixins.respond-to("bigger-tab") {
+  @include mixins.respond-to('bigger-tab') {
     max-width: 1000px;
   }
 
   .list-header {
-    @include mixins.respond-to("bigger-tab") {
+    @include mixins.respond-to('bigger-tab') {
       display: flex;
       justify-content: space-between;
       .list-menu {
@@ -45,9 +45,9 @@
 
   .tasks {
     margin-top: 25px;
-    
+
     .tasks-header {
-      @include mixins.respond-to("bigger-tab") {
+      @include mixins.respond-to('bigger-tab') {
         display: flex;
         justify-content: space-between;
       }
@@ -72,7 +72,7 @@
       border: solid 1px #ffffff;
       margin-bottom: 10px;
 
-      @include mixins.respond-to("bigger-sp") {
+      @include mixins.respond-to('bigger-sp') {
         font-size: large;
       }
 

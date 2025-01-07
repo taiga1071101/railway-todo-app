@@ -1,13 +1,13 @@
-@use "./variables";
+@use './variables';
 
 // 基本はmin-widthを使う。小さいものから描画した方がよいため。
 @mixin respond-to($breakpoint) {
-    @if map-has-key(variables.$breakpoints , $breakpoint) {
-        // 引数が変数内にある時のみ実行。
-        @media (min-width: map-get(variables.$breakpoints, $breakpoint)) {
-            @content;
-        }
-    } @else {
-        @error "エラーが発生しました。 #{$breakpoint}が取得できません。";
+  @if map-has-key(variables.$breakpoints, $breakpoint) {
+    // 引数が変数内にある時のみ実行。
+    @media (min-width: map-get(variables.$breakpoints, $breakpoint)) {
+      @content;
     }
+  } @else {
+    @error "エラーが発生しました。 #{$breakpoint}が取得できません。";
+  }
 }
